@@ -6,6 +6,7 @@ public class Shoot : MonoBehaviour
 {
 
     public Camera plrCam;
+    public GameObject _impact;
 
 
     // Start is called before the first frame update
@@ -33,7 +34,7 @@ public class Shoot : MonoBehaviour
                 //This is responsible for firing a ray from the camera. It uses Vector3 (XYZ). The X parameters picks a random number (if the Value is 0 it points to left side of the screen, if its 1 then it points the right side) for the horizontal position.
                 //The Y parameters picks a random number (if the Value is 0 it points to bottom side of the screen, if its 1 then it points the top side) for the vertical position.
                 //0.5f is the middle of the screen.
-                Ray _shotFired = plrCam.ViewportPointToRay(new Vector3(Random.Range(0.2f, 0.8f), Random.Range(0.2f, 0.8f), 0f));
+                Ray _shotFired = plrCam.ViewportPointToRay(new Vector3(Random.Range(0.4f, 0.6f), Random.Range(0.4f, 0.6f), 0f));
 
                 //RaycastHit does what it is named for with a variable name to store the value.
                 RaycastHit _shotHit;
@@ -42,6 +43,7 @@ public class Shoot : MonoBehaviour
                 if (Physics.Raycast(_shotFired, out _shotHit))
                 {
                     Debug.Log("I hit " + _shotHit.transform.name);
+                    Instantiate(_impact, _shotHit.point, transform.rotation);
                 }
                 
                 //If miss then play this one.
