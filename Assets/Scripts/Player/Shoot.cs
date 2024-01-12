@@ -7,7 +7,8 @@ public class Shoot : MonoBehaviour
 
     public Camera plrCam;
     public GameObject _impact;
-
+    public int _munition = 20;
+    public bool _w8 = true;
 
     // Start is called before the first frame update
     void Start()
@@ -25,9 +26,9 @@ public class Shoot : MonoBehaviour
     private void _Shoot()
     {
         //Checks if the player presses the designated key.
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && _munition > 0 && _w8 == true)
         {
-
+            _w8 = false;
             //The weapon is a double barrel shotgun firing both barrels. It means that it shoots 16 pellets at the same time. Thus we use 'for loop' to simulate a shotgun firing 16 projectiles at the same time.
             for (int _sht = 0; _sht < 16; _sht++)
             {
@@ -44,6 +45,7 @@ public class Shoot : MonoBehaviour
                 {
                     Debug.Log("I hit " + _shotHit.transform.name);
                     Instantiate(_impact, _shotHit.point, transform.rotation);
+                    
                 }
                 
                 //If miss then play this one.
@@ -52,6 +54,18 @@ public class Shoot : MonoBehaviour
                     Debug.Log("Miss!");
                 }
             }
+            _munition -= 2;
+            StartCoroutine(_Wait());
         }
+        else if (Input.GetKeyDown(KeyCode.Space) && _munition == 0 && _w8 == true)
+        {
+            Debug.Log("You're out!");
+        }
+    }
+
+   private IEnumerator _Wait()
+    {
+        yield return new WaitForSecondsRealtime(0.75f);
+        _w8 = true;
     }
 }
